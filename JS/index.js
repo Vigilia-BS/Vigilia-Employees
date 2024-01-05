@@ -10,6 +10,7 @@ let dailyLoans          = document.getElementById('dailyLoans'   )
 let dailyCoins          = document.getElementById('dailyCoins'   )
 
 let addDayBTN = document.getElementById("addDayBTN")
+let salaryType = document.getElementById("salaryType")
 
 let shiftLongTime       = 10
 
@@ -497,78 +498,328 @@ function calcAndAddDay(){
 }
 
 function calcFinalPrice(){
-    let totalLateTime = 0
-    let totalOvertime = 0
-    let totalLoans = 0
-    let totalExtra = 0
-    let totAllDiscount = 0
-    let totalAllDaysDiscount = 0
-    let salaryByDayOfTheUser = 0
+    
+    if (!salaryType.checked) {
+        
+        let totalLateTime = 0
+        let totalOvertime = 0
+        let totalLoans = 0
+        let totalExtra = 0
+        let totAllDiscount = 0
+        let totalAllDaysDiscount = 0
+        let salaryByDayOfTheUser = 0
 
-    for (let i = 0; i < userAllDays.length; i++) {
-        salaryByDayOfTheUser = userAllDays[i].salaryByDay
-        totalLateTime = totalLateTime + userAllDays[i].userLate;
-        totalOvertime = totalOvertime + userAllDays[i].userOvertime;
-        totalExtra = totalExtra + userAllDays[i].dailyCoins
+        for (let i = 0; i < userAllDays.length; i++) {
+            salaryByDayOfTheUser = userAllDays[i].salaryByDay
+            totalLateTime = totalLateTime + userAllDays[i].userLate;
+            totalOvertime = totalOvertime + userAllDays[i].userOvertime;
+            totalExtra = totalExtra + userAllDays[i].dailyCoins
 
-        if (userAllDays[i].dayStatus == 'Half Day Off') {
+            if (userAllDays[i].dayStatus == 'Half Day Off') {
 
-            totalLoans = totalLoans
-            totalAllDaysDiscount = totalAllDaysDiscount + 0.5
-            totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay/2))
+                totalLoans = totalLoans
+                totalAllDaysDiscount = totalAllDaysDiscount + 0.5
+                totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay/2))
 
-        }else if(userAllDays[i].dayStatus == 'Full Day Off'){
+            }else if(userAllDays[i].dayStatus == 'Full Day Off'){
 
-            totalLoans = totalLoans
-            totalAllDaysDiscount = totalAllDaysDiscount + 1
-            totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay))
+                totalLoans = totalLoans
+                totalAllDaysDiscount = totalAllDaysDiscount + 1
+                totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay))
 
 
-        }else{
+            }else{
 
-            totalLoans = totalLoans + userAllDays[i].dailyLoans
-            totalAllDaysDiscount = totalAllDaysDiscount
+                totalLoans = totalLoans + userAllDays[i].dailyLoans
+                totalAllDaysDiscount = totalAllDaysDiscount
+
+            }
+
+
 
         }
 
+        let finalPrice = Math.round(Number(employeeSalary) + Number(totalExtra) + Number(totalLoans) + Number(totAllDiscount) + (Number(totalOvertime)*Math.round(employeeSalary/30/shiftLongTime)) - Number(totalLateTime)*Math.round(employeeSalary/30/shiftLongTime));
 
+        document.getElementById('displayInfo').innerHTML = 
+        `
+        <div class="col-11 mx-auto border border-5 border-primary rounded-3">
+
+            <div class="row ps-3 bg-primary py-3">
+                <h3 class="col-md-6 col-lg-12 my-2 d-flex justify-content-start align-items-center">Name : ${employee}</h3>
+                <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary : ${employeeSalary} EGP</h3>
+                <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary Day : ${Math.round(employeeSalary/30)} EGP</h3>
+                <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary Hour : ${Math.round(employeeSalary/30/shiftLongTime)} EGP</h3>
+            </div>
+        
+            <div class="row ps-3 py-4">
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total Loans     : ${totalLoans}    EGP</h3>
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total Extras    : ${totalExtra}    EGP</h3>
+
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total LateTime  : ${totalLateTime} H</h3>
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total OverTime  : ${totalOvertime} H</h3>
+
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Days Discount : ${totalAllDaysDiscount}    Days</h3>
+            </div>
+
+            <div class="row ps-3 bg-primary py-3">
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Final Salary : ${finalPrice} EGP</h3>
+            </div>
+    
+        </div>
+
+        `
+    }else{
+
+        let totalLateTime = 0
+        let totalOvertime = 0
+        let totalLoans = 0
+        let totalExtra = 0
+        let totAllDiscount = 0
+        let totalAllDaysDiscount = 0
+        let salaryByDayOfTheUser = 0
+
+        let finalPrice1 = 0
+        let finalPrice2 = 0
+        let finalPrice3 = 0
+        let finalPrice4 = 0
+
+        if (userAllDays[0].dateDay==1 &&userAllDays[6].dateDay==7) {
+            
+            for (let i = 0; i < 7; i++) {
+            
+                salaryByDayOfTheUser = userAllDays[i].salaryByDay
+                totalLateTime = totalLateTime + userAllDays[i].userLate;
+                totalOvertime = totalOvertime + userAllDays[i].userOvertime;
+                totalExtra = totalExtra + userAllDays[i].dailyCoins
+    
+                if (userAllDays[i].dayStatus == 'Half Day Off') {
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 0.5
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay/2))
+    
+                }else if(userAllDays[i].dayStatus == 'Full Day Off'){
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 1
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay))
+    
+    
+                }else{
+    
+                    totalLoans = totalLoans + userAllDays[i].dailyLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount
+    
+                }
+    
+    
+    
+            }
+            finalPrice1 = Math.round(Number(employeeSalary/4) + Number(totalExtra) + Number(totalLoans) + Number(totAllDiscount) + (Number(totalOvertime)*Math.round(employeeSalary/30/shiftLongTime)) - Number(totalLateTime)*Math.round(employeeSalary/30/shiftLongTime));
+        }else{
+
+            finalPrice1 = "Fill all Days..!"
+        }
+
+
+        totalLateTime = 0
+        totalOvertime = 0
+        totalLoans = 0
+        totalExtra = 0
+        totAllDiscount = 0
+        totalAllDaysDiscount = 0
+        salaryByDayOfTheUser = 0
+
+        if (userAllDays[7].dateDay==8 &&userAllDays[13].dateDay==14) {
+            
+            for (let i = 7; i < 14; i++) {
+
+                salaryByDayOfTheUser = userAllDays[i].salaryByDay
+                totalLateTime = totalLateTime + userAllDays[i].userLate;
+                totalOvertime = totalOvertime + userAllDays[i].userOvertime;
+                totalExtra = totalExtra + userAllDays[i].dailyCoins
+    
+                if (userAllDays[i].dayStatus == 'Half Day Off') {
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 0.5
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay/2))
+    
+                }else if(userAllDays[i].dayStatus == 'Full Day Off'){
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 1
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay))
+    
+    
+                }else{
+    
+                    totalLoans = totalLoans + userAllDays[i].dailyLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount
+    
+                }
+    
+    
+    
+            }
+
+            finalPrice2 = Math.round(Number(employeeSalary/4) + Number(totalExtra) + Number(totalLoans) + Number(totAllDiscount) + (Number(totalOvertime)*Math.round(employeeSalary/30/shiftLongTime)) - Number(totalLateTime)*Math.round(employeeSalary/30/shiftLongTime));
+
+        }else{
+
+            finalPrice2 = "Fill all Days..!"
+        }
+        
+        totalLateTime = 0
+        totalOvertime = 0
+        totalLoans = 0
+        totalExtra = 0
+        totAllDiscount = 0
+        totalAllDaysDiscount = 0
+        salaryByDayOfTheUser = 0
+
+        if (userAllDays[14].dateDay==15 &&userAllDays[20].dateDay==21) {
+            
+            for (let i = 14; i < 21; i++) {
+
+                salaryByDayOfTheUser = userAllDays[i].salaryByDay
+                totalLateTime = totalLateTime + userAllDays[i].userLate;
+                totalOvertime = totalOvertime + userAllDays[i].userOvertime;
+                totalExtra = totalExtra + userAllDays[i].dailyCoins
+    
+                if (userAllDays[i].dayStatus == 'Half Day Off') {
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 0.5
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay/2))
+    
+                }else if(userAllDays[i].dayStatus == 'Full Day Off'){
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 1
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay))
+    
+    
+                }else{
+    
+                    totalLoans = totalLoans + userAllDays[i].dailyLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount
+    
+                }
+    
+    
+    
+            }
+
+            finalPrice3 = Math.round(Number(employeeSalary/4) + Number(totalExtra) + Number(totalLoans) + Number(totAllDiscount) + (Number(totalOvertime)*Math.round(employeeSalary/30/shiftLongTime)) - Number(totalLateTime)*Math.round(employeeSalary/30/shiftLongTime));
+
+        }else{
+
+            finalPrice3 = "Fill all Days..!"
+
+        }
+        
+
+        totalLateTime = 0
+        totalOvertime = 0
+        totalLoans = 0
+        totalExtra = 0
+        totAllDiscount = 0
+        totalAllDaysDiscount = 0
+        salaryByDayOfTheUser = 0
+
+        if (userAllDays[21].dateDay==22 &&userAllDays[27].dateDay==28) {
+            
+            for (let i = 21; i < 31; i++) {
+
+               if (userAllDays[i]) {
+                
+                salaryByDayOfTheUser = userAllDays[i].salaryByDay
+                totalLateTime = totalLateTime + userAllDays[i].userLate;
+                totalOvertime = totalOvertime + userAllDays[i].userOvertime;
+                totalExtra = totalExtra + userAllDays[i].dailyCoins
+    
+                if (userAllDays[i].dayStatus == 'Half Day Off') {
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 0.5
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay/2))
+    
+                }else if(userAllDays[i].dayStatus == 'Full Day Off'){
+    
+                    totalLoans = totalLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount + 1
+                    totAllDiscount = totAllDiscount+ -(Math.round(userAllDays[i].salaryByDay))
+    
+    
+                }else{
+    
+                    totalLoans = totalLoans + userAllDays[i].dailyLoans
+                    totalAllDaysDiscount = totalAllDaysDiscount
+    
+                }
+
+               }
+    
+            }
+
+            finalPrice4 = Math.round(Number(employeeSalary/4) + Number(totalExtra) + Number(totalLoans) + Number(totAllDiscount) + (Number(totalOvertime)*Math.round(employeeSalary/30/shiftLongTime)) - Number(totalLateTime)*Math.round(employeeSalary/30/shiftLongTime));
+        
+        }else{
+        
+            finalPrice4 = "Fill all Days..!"
+        
+        }
+        
+
+        totalLateTime = 0
+        totalOvertime = 0
+        totalLoans = 0
+        totalExtra = 0
+        totAllDiscount = 0
+        totalAllDaysDiscount = 0
+        salaryByDayOfTheUser = 0
+
+        document.getElementById('displayInfo').innerHTML = 
+        `
+        <div class="col-11 mx-auto border border-5 border-primary rounded-3">
+
+            <div class="row ps-3 bg-primary py-3">
+                <h3 class="col-md-6 col-lg-12 my-2 d-flex justify-content-start align-items-center">Name : ${employee}</h3>
+                <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary : ${employeeSalary} EGP</h3>
+                <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary Day : ${Math.round(employeeSalary/30)} EGP</h3>
+                <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary Hour : ${Math.round(employeeSalary/30/shiftLongTime)} EGP</h3>
+            </div>
+        
+            <div class="row ps-3 py-4">
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total Loans     : ${totalLoans}    EGP</h3>
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total Extras    : ${totalExtra}    EGP</h3>
+
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total LateTime  : ${totalLateTime} H</h3>
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total OverTime  : ${totalOvertime} H</h3>
+
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Days Discount : ${totalAllDaysDiscount}    Days</h3>
+            </div>
+
+            <div class="row ps-3 bg-primary py-3">
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Week-1 : ${finalPrice1} EGP</h3>
+            </div>
+            <div class="row ps-3 bg-primary py-3">
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Week-2 : ${finalPrice2} EGP</h3>
+            </div>
+            <div class="row ps-3 bg-primary py-3">
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Week-3 : ${finalPrice3} EGP</h3>
+            </div>
+            <div class="row ps-3 bg-primary py-3">
+                <h3 class="col-12  my-3"><span class="fw-bolder me-2">Week-4 : ${finalPrice4} EGP</h3>
+            </div>
+    
+        </div>
+
+        `
 
     }
-
-    let finalPrice = Math.round(Number(employeeSalary) + Number(totalExtra) + Number(totalLoans) + Number(totAllDiscount) + (Number(totalOvertime)*Math.round(employeeSalary/30/shiftLongTime)) - Number(totalLateTime)*Math.round(employeeSalary/30/shiftLongTime));
-
-    document.getElementById('displayInfo').innerHTML = 
-    `
-
-    <div class="col-11 mx-auto border border-5 border-primary rounded-3">
-
-        <div class="row ps-3 bg-primary py-3">
-          <h3 class="col-md-6 col-lg-12 my-2 d-flex justify-content-start align-items-center">Name : ${employee}</h3>
-          <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary : ${employeeSalary} EGP</h3>
-          <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary Day : ${Math.round(employeeSalary/30)} EGP</h3>
-          <h3 class="col-md-6 col-lg-4 my-2 d-flex justify-content-start align-items-center">Salary Hour : ${Math.round(employeeSalary/30/shiftLongTime)} EGP</h3>
-        </div>
-    
-        <div class="row ps-3 py-4">
-        <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total Loans     : ${totalLoans}    EGP</h3>
-        <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total Extras    : ${totalExtra}    EGP</h3>
-
-          <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total LateTime  : ${totalLateTime} H</h3>
-          <h3 class="col-12  my-3"><span class="fw-bolder me-2">Total OverTime  : ${totalOvertime} H</h3>
-
-          <h3 class="col-12  my-3"><span class="fw-bolder me-2">Days Discount : ${totalAllDaysDiscount}    Days</h3>
-
-        </div>
-
-        <div class="row ps-3 bg-primary py-3">
-
-          <h3 class="col-12  my-3"><span class="fw-bolder me-2">Final Salary : ${finalPrice} EGP</h3>
-      
-        </div>
-    
-      </div>
-
-    `
 }
 
 //           <h3 class="col-12  my-3"><span class="fw-bolder me-2">Final Salary : ${Math.round(employeeSalary + totalExtra + (totalOvertime * (Math.round(employeeSalary/30/shiftLongTime)) - totalLoans - (totalLate * (Math.round(employeeSalary/30/shiftLongTime)))))} EGP</h3>

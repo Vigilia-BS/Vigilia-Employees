@@ -40,7 +40,10 @@
   
             <h4>Monthly Salary :</h4>
   
-            <input id="monthlySalary" type="number" class="form-control">
+            <div class=" d-flex align-items-center">
+              <input id="monthlySalary" type="number" class="form-control">
+              <input id="salaryType" style="transform: scale(3);" onchange="calcFinalPrice()" type="checkbox" value="weeklySalary" class="ms-3 me-2">
+            </div>
   
           </div>
   
@@ -78,7 +81,7 @@
 
             <div class="row py-2">
 
-              <div class="col-7 col-md-4  d-flex justify-content-center align-items-center">
+              <div class="col-8 col-md-3  d-flex justify-content-center align-items-center">
   
                 <th><i class="fa-regular fa-calendar-days fs-3 me-3"></i></th>
 
@@ -86,7 +89,7 @@
               
               </div>
       
-              <div class="col-5 col-md-8 d-flex justify-content-center align-items-center">
+              <div class="col-4 col-md-9 d-flex justify-content-center align-items-center">
       
                 <div class="d-flex flex-column justify-content-center align-items-center mx-2">
                   <i class="fa-solid fa-check mb-2"></i>
@@ -97,16 +100,16 @@
                   <i class="fa-solid fa-mug-hot mb-2"></i>
                   <input type="radio" name="status" id="holiday" value="Holiday"/>  
                 </div>          
-                
-                <div class="d-flex flex-column justify-content-center align-items-center mx-2">
-                  <i class="fa-regular fa-star-half-stroke mb-2"></i>
-                  <input type="radio" name="status" id="halfDayOff" value="Half Off" />  
-                </div>          
-                
+                 
                 <div class="d-flex flex-column justify-content-center align-items-center mx-2">
                   <i class="fa-regular fa-star mb-2"></i>
                   <input type="radio" name="status" id="fullDayOff" value="Day Off" />  
                 </div>
+
+                <div class="d-flex flex-column justify-content-center align-items-center mx-2">
+                  <i class="fa-regular fa-star-half-stroke mb-2"></i>
+                  <input type="radio" name="status" id="halfDayOff" value="Half Off" />  
+                </div>          
       
               </div>
   
